@@ -29,6 +29,11 @@ An entity needs to be verifiable, you can't just take what another client tells
 you for granted, this is achieved through tracking the history of each entity
 and verifying it to be real*(istic)*.
 
+Player
+------
+Every player has an ECDSA key pair that's used when catching a pokémon (to
+generate the creation event) or when doing a pokémon transfer.
+
 History
 -------
 The history is a chain of events that happen to the entity or the entity makes
@@ -52,3 +57,21 @@ The `hash` is the important part, it works as checksum for the previous event,
 and ensures the history hasn't been tampered with. **bcrypt** is used to create
 the salt to make forging histories almost impossible on a meaningful time scale
 while still allowing proper gameplay.
+
+Forging
+=======
+This design doesn't *prevent* forging, but it makes it utterly *pointless*. The
+history must be realistic, this means you can't just put an event where you got
+a gorillion experience points and made it up to maximum level with maximum
+stats.
+
+You'd have to carefully forge the history of the Pokémon you're trying to forge
+and changes to the history of the player in a way that makes it level up, it
+would be thousands, or hundreds of thousand of entries to forge, bcrypt salts
+included.
+
+And even if you could forge the whole history in an acceptable time-frame it
+would be unusable, because it would end up in the future since you cannot
+change the player history to have caught a pokémon in the past without changing
+the whole history for the player thus resulting in forgery when verified by
+clients that already know you.
