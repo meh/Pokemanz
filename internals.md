@@ -58,6 +58,20 @@ and ensures the history hasn't been tampered with. **bcrypt** is used to create
 the salt to make forging histories almost impossible on a meaningful time scale
 while still allowing proper gameplay.
 
+Creation
+========
+To ensure the pokémon sex, ability and nature aren't forged, the tracker will
+generate them randomly and sign the generation with its own key.
+
+Clients will then have a list of keys they trust and they'll be able to verify
+the creation wasn't forged.
+
+To avoid pokémon becoming unusable in case a tracker gets taken down, clients
+will be able to trust multiple keys and use multiple trackers at the same time.
+
+In case a key gets compromised there will be an option to trust pokémon
+generated before a certain date.
+
 Forging
 =======
 This design doesn't *prevent* forging, but it makes it utterly *pointless*. The
